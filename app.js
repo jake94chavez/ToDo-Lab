@@ -28,6 +28,65 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/', index);
 app.use('/users', users);
 
+// get all todos
+app.get('/api/todos', function todosIndex (req, res) {
+	//find all todos in db
+	Todo.find(function handleDBTodosListed (err, allTodos) {
+		res.json({ todos: allTodos });
+	});
+});
+
+// get one todo
+app.get('/api/todos/:id', function (req, res) {
+	//get todo id from url params ('req.params')
+	var todoId = req.params.id;
+
+	//find todo in db by id
+	Todo.findOne({ _id: todoId }, function (err, foundTodo) {
+		res.json(foundTodo);
+	});
+});
+
+// create new todo
+app.post('/api/todos', function todosCreate(req, res) {
+	// create new todo with form data ('req.body')
+	var newTodo = new Todo(req.body);
+
+	//save new todo in db
+	newTodo.save(function handleDBTodoSaved(err, savedTodo) {
+		res.json(savedTodo);
+	});
+});
+
+// update todo
+app.put('/api/todos/:id', function (req, res) {
+	// get todo id from url params ('req.params')
+	var todoId = req.params.id;
+
+	//find todo in db by id
+	Todo.findOne({ _id: todoId}, function (err, foundTodo) {
+		//update the todo's attributes
+		foundTodo.task = req.body.task;
+		foundTodo.description = req.body.description;
+
+		//save updated todo in db
+		foundTodo.save(function (err, savedTodo) {
+			res.json(savedTodo);
+		});
+	});
+});
+
+// delete todo
+app.delete('/api.todos/:id', function (req, res) {
+	//get todo id from url params ('req.params')
+	var todoId = req.params.id;
+
+	//find todo in db and remove
+	Todo.findOneAndRemove({ _id: todoId }, function (err, deletedTodo) {
+		res.json(deletedTodo);
+	});
+});
+
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
   var err = new Error('Not Found');

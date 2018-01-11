@@ -7,9 +7,9 @@
   <body>
     <h1><%= title %></h1>
     <div class='container'>
-    	<% Todo.todos.forEach((todo) => { %>
+    	<% db.Todo.forEach((todo) => { %>
     <div class='todo'>
-      <h3 class='todo-name'><%= Todo.todos.task %></h3>
+      <h3 class='todo-name'><%= db.Todo.task %></h3>
     </div>
 <%  }) %>
   </body>

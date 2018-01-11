@@ -6,7 +6,7 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
-var Todo = require('./models');
+var db = require('./models');
 mongoose.connect('mongodb://localhost/todo-app');
 
 var index = require('./routes/index');
@@ -32,8 +32,12 @@ app.use('/users', users);
 // get all todos
 app.get('/api/todos', function todosIndex (req, res) {
 	//find all todos in db
-	Todo.find(function handleDBTodosListed (err, allTodos) {
-		res.json({ todos: allTodos });
+	db.Todo.find(function (err, todos) {
+		if (err) {
+			console.log('index error: ' + err);
+			res.sendStatus(500);
+		}
+		res.json(todos);
 	});
 });
 
@@ -43,7 +47,7 @@ app.get('/api/todos/:id', function (req, res) {
 	var todoId = req.params.id;
 
 	//find todo in db by id
-	Todo.findOne({ _id: todoId }, function (err, foundTodo) {
+	db.Todo.findOne({ _id: todoId }, function (err, foundTodo) {
 		res.json(foundTodo);
 	});
 });

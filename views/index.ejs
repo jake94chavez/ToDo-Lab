@@ -6,6 +6,11 @@
   </head>
   <body>
     <h1><%= title %></h1>
-    <p>Welcome to <%= title %></p>
+    <div class='container'>
+    	<% Todo.todos.forEach((todo) => { %>
+    <div class='todo'>
+      <h3 class='todo-name'><%= Todo.todos.task %></h3>
+    </div>
+<%  }) %>
   </body>
 </html>

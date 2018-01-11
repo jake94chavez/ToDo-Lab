@@ -6,8 +6,8 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
-var Todo = require('./models/todo');
-mongoose.connect('mongodb://localhost/todo-app-demo');
+var Todo = require('./models');
+mongoose.connect('mongodb://localhost/todo-app');
 
 var index = require('./routes/index');
 var users = require('./routes/users');
